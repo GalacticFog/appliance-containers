@@ -10,10 +10,10 @@ done
 
 # deploy appliance blueprint
 
-sudo docker-compose up -d db zookeeper kafka
+sudo docker-compose up -d --no-recreate db zookeeper kafka
 # restore DB
-sudo docker-compose up -d meta
+sudo docker-compose up -d --no-recreate meta
 # deploy blueprint in meta, parse topology, set config
-#sudo docker-compose up -d security billing dns launcher
+#sudo docker-compose up -d --no-recreate security billing dns launcher
 
 echo "> Meta: http://$PUBLIC_HOSTNAME:14374"
