@@ -10,8 +10,6 @@ done
 
 # deploy appliance blueprint
 
-DC=`which docker-compose`
-
-sudo $DC -f compose-stage1.yaml up -d
-#sudo $DC -f compose-stage2.yaml up -d 
-#sudo $DC -f compose-stage3.yaml up -d 
+sudo docker-compose -f compose-stage1.yaml up -d
+#sudo docker-compose -f compose-stage2.yaml up -d
+#sudo docker-compose -f compose-stage3.yaml up -d
