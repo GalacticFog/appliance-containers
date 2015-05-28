@@ -1,0 +1,7 @@
+metaconsumer: 
+  external_links:
+  - meta:meta
+  environment: 
+  - GESTALT_META=http://PUBLIC_HOSTNAME:9000
+  - GESTALT_ORG=com.galacticfog
+  - GESTALT_SECRET=SECRET

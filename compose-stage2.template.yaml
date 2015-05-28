@@ -1,0 +1,6 @@
+meta: 
+  image: galacticfog.artifactoryonline.com/gestalt-config:latest
+  external_links:
+    - db:db
+  ports: 
+    - "9000:14374"

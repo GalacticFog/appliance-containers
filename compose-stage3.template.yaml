@@ -1,0 +1,43 @@
+security: 
+  image: galacticfog.artifactoryonline.com/gestalt-config:latest
+  extends: 
+    file: meta.yml
+    service: metaconsumer
+  environment: 
+    - ./security.env
+    - ./ssl.env
+  ports: 
+    - "9000:9455"
+#billing:
+#  image: galacticfog.artifactoryonline.com/gestalt-billing:latest
+#  extends: 
+#    file: meta.yml
+#    service: metaconsumer
+#  environment: 
+#    - ./billing.env
+#    - ./ssl.env
+#  ports: 
+#    - "9000:6111"
+#dns:
+#  image: galacticfog.artifactoryonline.com/gestalt-dns:latest
+#  extends: 
+#    file: meta.yml
+#    service: metaconsumer
+#  environment: 
+#    - ./dns.env
+#  expose: 
+#    - "9000"
+launcher: 
+  image: galacticfog.artifactoryonline.com/gestalt-launcher:latest
+  extends: 
+    file: meta.yml
+    service: metaconsumer
+  environment: 
+    - ./launcher.env
+    - ./ssl.env
+  external_links: 
+    - db:db
+  links:
+    - security:security
+  expose: 
+    - "9000:443"
