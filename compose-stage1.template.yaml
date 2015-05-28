@@ -1,5 +1,5 @@
 db: 
-  build: postgresql
+  #build: postgresql
   image: galacticfog.artifactoryonline.com/gestalt-postgres:latest
   ports: 
     - "5432:5432"
