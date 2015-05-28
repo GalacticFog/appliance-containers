@@ -15,3 +15,5 @@ sudo docker-compose -f compose-stage1.yaml up -d
 sudo docker-compose -f compose-stage2.yaml up -d
 # deploy blueprint in meta, parse topology, set config
 #sudo docker-compose -f compose-stage3.yaml up -d
+
+echo "> Meta: http://$PUBLIC_HOSTNAME:14374"
