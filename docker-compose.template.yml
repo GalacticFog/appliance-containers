@@ -22,7 +22,7 @@ meta:
   links:
     - db
   ports: 
-    - "9000:14374"
+    - "14374:9000"
   environment: 
     DATABASE_HOSTNAME:   db
     DATABASE_PORT:       5432
@@ -39,7 +39,7 @@ security:
     - ./security.env
     - ./ssl.env
   ports: 
-    - "9000:9455"
+    - "9455:9000"
 #billing:
 #  image: galacticfog.artifactoryonline.com/gestalt-billing:latest
 #  extends: 
@@ -49,7 +49,7 @@ security:
 #    - ./billing.env
 #    - ./ssl.env
 #  ports: 
-#    - "9000:6111"
+#    - "6111:9000"
 #dns:
 #  image: galacticfog.artifactoryonline.com/gestalt-dns:latest
 #  extends: 
@@ -58,7 +58,7 @@ security:
 #  environment: 
 #    - ./dns.env
 #  expose: 
-#    - "9000"
+#    - "8053:9000"
 launcher: 
   image: galacticfog.artifactoryonline.com/gestalt-launcher:latest
   extends: 
@@ -71,4 +71,4 @@ launcher:
     - db
     - security
   expose: 
-    - "9000:443"
+    - "443:9000"
