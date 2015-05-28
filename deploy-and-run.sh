@@ -1,6 +1,7 @@
 #!/bin/bash
 
-PUBLIC_HOSTNAME=$(curl http://169.254.169.254/latest/meta-data/public-hostname)
+PUBLIC_HOSTNAME=$(curl -s http://169.254.169.254/latest/meta-data/public-hostname)
+echo "> PUBLIC_HOSTNAME=$PUBLIC_HOSTNAME"
 
 for f in "compose-stage1" "compose-stage2" "compose-stage3" "meta"; do 
   echo "> Updating PUBLIC_HOSTNAME in $f"
