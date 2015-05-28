@@ -1,5 +1,5 @@
 security: 
-  image: galacticfog.artifactoryonline.com/gestalt-config:latest
+  image: galacticfog.artifactoryonline.com/gestalt-security:latest
   extends: 
     file: meta.yml
     service: metaconsumer

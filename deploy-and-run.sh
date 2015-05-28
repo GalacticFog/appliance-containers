@@ -11,5 +11,7 @@ done
 # deploy appliance blueprint
 
 sudo docker-compose -f compose-stage1.yaml up -d
-#sudo docker-compose -f compose-stage2.yaml up -d
+# restore DB
+sudo docker-compose -f compose-stage2.yaml up -d
+# deploy blueprint in meta, parse topology, set config
 #sudo docker-compose -f compose-stage3.yaml up -d
