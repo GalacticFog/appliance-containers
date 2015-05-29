@@ -1,8 +1,12 @@
 db: 
   #build: postgresql
-  image: galacticfog.artifactoryonline.com/gestalt-postgres:latest
+  image: centos/postgresql
   ports: 
     - "5432:5432"
+  environment: 
+    DB_USER: galacticfogdemo
+    DB_PASS: changeme4242
+    DB_NAME: demo
 zookeeper:
   image: wurstmeister/zookeeper
   ports: 
