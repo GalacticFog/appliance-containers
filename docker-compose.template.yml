@@ -42,12 +42,12 @@ ifConfigTask:
     BLUEPRINT_NAME: gestalt-base-infrastructure
   volumes:
     - if-config-task/example_deployment.json:/tmp/example-deployment.json
-    - if-config-task/build-and-publish.sh:/tmp/build-and-publish.sh
+    - if-config-task/deploy-blueprint-set-config.sh:/tmp/deploy-blueprint-set-config.sh
     - env/security.env:/tmp/security.env
     - env/billing.env:/tmp/billing.env
     - env/dns.env:/tmp/dns.env
     - env/launcher.env:/tmp/launcher.env
-  entrypoint: /tmp/example-deployment.sh
+  entrypoint: /tmp/deploy-blueprint-set-config.sh
 security: 
   image: galacticfog.artifactoryonline.com/gestalt-security:latest
   extends: 
