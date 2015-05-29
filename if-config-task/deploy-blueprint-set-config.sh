@@ -11,10 +11,10 @@ DNS_SERVICE_ID=$(echo $DEPLOY_RESPONSE      | jq '.root_cluster[] | select(.name
 LAUNCHER_ID=$(echo $DEPLOY_RESPONSE | jq '.root_cluster[] | select(.name == "infrastructure") | .nodes[] | select(.node_template_name == "gestalt-launcher") | .instances[0].id')
 LAUNCHER_SERVICE_ID=$(echo $DEPLOY_RESPONSE | jq '.root_cluster[] | select(.name == "infrastructure") | .nodes[] | select(.node_template_name == "gestalt-launcher") | .instances[0].service_id')
 
-echo Security: $SECURITY_ID (service $SECURITY_SERVICE_ID)
-echo Billing: $BILLING_ID (service $BILLING_SERVICE_ID)
-echo DNS: $DNS_ID (service $DNS_SERVICE_ID)
-echo Launcher: $LAUNCHER_ID (service $LAUNCHER_SERVICE_ID)
+echo "Security: $SECURITY_ID (service $SECURITY_SERVICE_ID)"
+echo "Billing: $BILLING_ID (service $BILLING_SERVICE_ID)"
+echo "DNS: $DNS_ID (service $DNS_SERVICE_ID)"
+echo "Launcher: $LAUNCHER_ID (service $LAUNCHER_SERVICE_ID)"
 
 echo "GESTALT_NODE=$SECURITY_ID"            >> /tmp/security.env
 echo "GESTALT_SERVICE=$SECURITY_SERVICE_ID" >> /tmp/security.env
