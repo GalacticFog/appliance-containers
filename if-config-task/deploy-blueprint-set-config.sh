@@ -2,7 +2,7 @@
 
 BLUEPRINTS_RESPONSE=$(cat /tmp/example_blueprints.json)
 #BLUEPRINTS_RESPONSE=$(curl -s meta:9000/blueprints)
-BLUEPRINT_ID=$(echo $DEPLOY_RESPONSE | jq -r '.[] | select(.name == "infrastructure") | .id')
+BLUEPRINT_ID=$(echo $BLUEPRINTS_RESPONSE | jq -r '.[] | select(.name == "infrastructure") | .id')
 echo "Infrastructure blueprint ID: $BLUEPRINT_ID"
 
 PAYLOAD='{"location_id": 1, "environment_id": 1}'
