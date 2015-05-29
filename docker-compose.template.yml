@@ -4,9 +4,9 @@ db:
   ports: 
     - "5432:5432"
   environment: 
-    DB_USER: galacticfogdemo
+    DB_USER: gfadmin
     DB_PASS: changeme4242
-    DB_NAME: demo
+    DB_NAME: postgres
 zookeeper:
   image: wurstmeister/zookeeper
   ports: 
@@ -41,7 +41,7 @@ ifConfigTask:
   environment:
     BLUEPRINT_NAME: gestalt-base-infrastructure
   volumes:
-    - if-config-task/example_deployment.json:/tmp/example-deployment.json
+    - if-config-task/example_deployment.json:/tmp/example_deployment.json
     - if-config-task/deploy-blueprint-set-config.sh:/tmp/deploy-blueprint-set-config.sh
     - env/security.env:/tmp/security.env
     - env/billing.env:/tmp/billing.env
