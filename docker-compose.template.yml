@@ -42,6 +42,7 @@ ifConfigTask:
     BLUEPRINT_NAME: gestalt-base-infrastructure
   volumes:
     - if-config-task/example_deployment.json:/tmp/example_deployment.json
+    - if-config-task/example_blueprints.json:/tmp/example_blueprints.json
     - if-config-task/deploy-blueprint-set-config.sh:/tmp/deploy-blueprint-set-config.sh
     - env/security.env:/tmp/security.env
     - env/billing.env:/tmp/billing.env

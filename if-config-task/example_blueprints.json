@@ -1,0 +1,22 @@
+[
+  {
+    "id": "1",
+    "name": "blueprint-1",
+    "rel": "self",
+    "type": "application/vnd.galacticfog.gestalt.blueprint",
+    "href": "/blueprints/1"
+  },
+  {
+    "id": "7",
+    "name": "infrastructure",
+    "rel": "self",
+    "type": "application/vnd.galacticfog.gestalt.blueprint",
+    "href": "/blueprints/7"
+  },
+  {
+    "id": "9",
+    "name": "blueprint-9",
+    "rel": "self",
+    "type": "application/vnd.galacticfog.gestalt.blueprint",
+    "href": "/blueprints/9"
+  }]
