@@ -35,16 +35,19 @@ meta:
     DATABASE_NAME:       meta
     DATABASE_TIMEOUT_MS: 5000
 ifConfigTask:
-  image: galacticfog.artifactoryonline.com/if-config-task:latest
+  image: galacticfog.artifactoryonline.com/utilimage:latest
   links: 
     - meta
   environment:
     BLUEPRINT_NAME: gestalt-base-infrastructure
   volumes:
+    - if-config-task/example_deployment.json:/tmp/example-deployment.json
+    - if-config-task/build-and-publish.sh:/tmp/build-and-publish.sh
     - env/security.env:/tmp/security.env
     - env/billing.env:/tmp/billing.env
     - env/dns.env:/tmp/dns.env
     - env/launcher.env:/tmp/launcher.env
+  entrypoint: /tmp/example-deployment.sh
 security: 
   image: galacticfog.artifactoryonline.com/gestalt-security:latest
   extends: 
