@@ -34,14 +34,25 @@ meta:
     DATABASE_PASSWORD:   password
     DATABASE_NAME:       meta
     DATABASE_TIMEOUT_MS: 5000
+ifConfigTask:
+  image: galacticfog.artifactoryonline.com/if-config-task:latest
+  links: 
+    - meta
+  environment:
+    - BLUEPRINT_NAME: gestalt-base-infrastructure
+  volumes:
+    - env/security.env:/tmp/security.env
+    - env/billing.env:/tmp/billing.env
+    - env/dns.env:/tmp/dns.env
+    - env/launcher.env:/tmp/launcher.env
 security: 
   image: galacticfog.artifactoryonline.com/gestalt-security:latest
   extends: 
     file: meta.yml
     service: metaconsumer
   environment: 
-    - ./security.env
-    - ./ssl.env
+    - env/security.env
+    - env/ssl.env
   ports: 
     - "9455:9000"
 #billing:
@@ -50,8 +61,8 @@ security:
 #    file: meta.yml
 #    service: metaconsumer
 #  environment: 
-#    - ./billing.env
-#    - ./ssl.env
+#    - env/billing.env
+#    - env/ssl.env
 #  ports: 
 #    - "6111:9000"
 #dns:
@@ -60,7 +71,7 @@ security:
 #    file: meta.yml
 #    service: metaconsumer
 #  environment: 
-#    - ./dns.env
+#    - env/dns.env
 #  expose: 
 #    - "8053:9000"
 launcher: 
@@ -69,8 +80,8 @@ launcher:
     file: meta.yml
     service: metaconsumer
   environment: 
-    - ./launcher.env
-    - ./ssl.env
+    - env/launcher.env
+    - env/ssl.env
   links: 
     - db
     - security
