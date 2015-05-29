@@ -39,7 +39,7 @@ ifConfigTask:
   links: 
     - meta
   environment:
-    - BLUEPRINT_NAME: gestalt-base-infrastructure
+    BLUEPRINT_NAME: gestalt-base-infrastructure
   volumes:
     - env/security.env:/tmp/security.env
     - env/billing.env:/tmp/billing.env
