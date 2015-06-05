@@ -1,6 +1,6 @@
 db: 
   #build: postgresql
-  image: centos/postgresql
+  image: galacticfog.artifactoryonline.com/centos7postgresql938:latest
   ports: 
     - "5432:5432"
   environment: 
@@ -21,6 +21,16 @@ kafka:
     KAFKA_ADVERTISED_HOST_NAME: PUBLIC_HOSTNAME
   volumes:
     - /var/run/docker.sock:/var/run/docker.sock
+ifDataLoad: 
+  image: galacticfog.artifactoryonline.com/utilimage:latest
+  links: 
+    - meta
+  environment: 
+    DB_USER: gfadmin
+    DB_PASS: changeme4242
+  volumes:
+    - if-data-load/createUsersAndDBs.sh:/tmp/createUsersAndDBs.sh
+  entrypoint: /tmp/createUsersAndDBs.sh
 meta: 
   image: galacticfog.artifactoryonline.com/gestalt-config:latest
   links:
@@ -30,8 +40,8 @@ meta:
   environment: 
     DATABASE_HOSTNAME:   db
     DATABASE_PORT:       5432
-    DATABASE_USERNAME:   username
-    DATABASE_PASSWORD:   password
+    DATABASE_USERNAME:   gestaltdev
+    DATABASE_PASSWORD:   M8keitw0rk
     DATABASE_NAME:       meta
     DATABASE_TIMEOUT_MS: 5000
 ifConfigTask:
