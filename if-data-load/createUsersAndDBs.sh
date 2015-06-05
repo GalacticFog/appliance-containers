@@ -5,15 +5,29 @@ db:*:*:$DB_USER:$DB_PASS
 EOF
 chmod 0600 ~/.pgpass
 
-echo "> Creating database 'meta'"
-createdb --username=gfadmin -w --host=db meta
+restore() {
+  echo "> Restoring $1 database..."
+  pg_restore -d $1 $2
+  rm $2
+}
 
-echo "> Creating database 'gestalt-security'"
-createdb --username=gfadmin -w --host=db gestalt-security
+create() {
+  echo "> Creating database 'gestalt-dns'"
+  createdb --username=gfadmin -w --host=db $1
+}
 
-echo "> Creating database 'gestalt-billing'"
-createdb --username=gfadmin -w --host=db gestalt-billing
+echo "> Restoring users/groups..."
+psql -f /tmp/globals.sql $DB_NAME
 
-echo "> Creating database 'gestalt-dns'"
-createdb --username=gfadmin -w --host=db gestalt-dns
+META=meta
+SECURITY=gestalt-security
+BILLING=gestalt-billing
+DNS=gestalt-dns
 
+create $META
+create $SECURITY
+create $BILLING
+create $DNS
+
+restore_and_delete $BILLING /tmp/gestaltbilling.pgr
+restore_and_delete $DNS     /tmp/gestaltdns.pgr
