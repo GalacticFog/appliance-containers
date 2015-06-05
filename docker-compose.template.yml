@@ -24,7 +24,7 @@ kafka:
 ifDataLoad: 
   image: galacticfog.artifactoryonline.com/utilimage:latest
   links: 
-    - meta
+    - db
   environment: 
     DB_USER: gfadmin
     DB_PASS: changeme4242
