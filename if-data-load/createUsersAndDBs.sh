@@ -29,5 +29,5 @@ create $SECURITY
 create $BILLING
 create $DNS
 
-restore_and_delete $BILLING /tmp/gestaltbilling.pgr
-restore_and_delete $DNS     /tmp/gestaltdns.pgr
+restore $BILLING /tmp/gestaltbilling.pgr
+restore $DNS     /tmp/gestaltdns.pgr
