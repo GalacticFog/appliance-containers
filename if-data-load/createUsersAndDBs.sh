@@ -8,7 +8,6 @@ chmod 0600 ~/.pgpass
 restore() {
   echo "> Restoring $1 database..."
   pg_restore --username=gfadmin -w --host=db -d $1 $2
-  rm $2
 }
 
 create() {
