@@ -13,7 +13,7 @@ done
 docker-compose up -d --no-recreate db zookeeper kafka
 # restore DB
 sudo docker-compose up ifDataLoad
-#docker-compose up -d --no-recreate meta
+docker-compose up -d --no-recreate meta
 # deploy blueprint in meta, parse topology, set config
 #docker-compose up --no-recreate ifConfigTask
 #sudo docker-compose up -d --no-recreate security billing dns launcher

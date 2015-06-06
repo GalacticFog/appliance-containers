@@ -6,12 +6,12 @@ EOF
 chmod 0600 ~/.pgpass
 
 restore() {
-  echo "> Restoring $1 database..."
+  echo "> Restoring database $1..."
   pg_restore --username=gfadmin -w --host=db -d $1 $2
 }
 
 create() {
-  echo "> Creating database 'gestalt-dns'"
+  echo "> Creating database '$1'"
   createdb --username=gfadmin --owner=gfadmin -w --host=db $1
 }
 
@@ -25,8 +25,9 @@ DNS=gestalt-dns
 
 create $META
 create $SECURITY
-create $BILLING
-create $DNS
+#create $BILLING
+#create $DNS
 
-restore $BILLING /tmp/gestaltbilling.pgr
-restore $DNS     /tmp/gestaltdns.pgr
+#restore $BILLING /tmp/gestaltbilling.pgr
+#restore $DNS     /tmp/gestaltdns.pgr
+restore $META    /tmp/meta.pgr
