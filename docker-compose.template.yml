@@ -31,8 +31,8 @@ ifDataLoad:
     DB_NAME: postgres
   volumes:
     - if-data-load/createUsersAndDBs.sh:/tmp/createUsersAndDBs.sh
-#    - if-data-load/gestaltbilling.pgr:/tmp/gestaltbilling.pgr
-#    - if-data-load/gestaltdns.pgr:/tmp/gestaltdns.pgr
+    - if-data-load/gestaltbilling.pgr:/tmp/gestaltbilling.pgr
+    - if-data-load/gestaltdns.pgr:/tmp/gestaltdns.pgr
     - if-data-load/meta.pgr:/tmp/meta.pgr
     - if-data-load/globals.sql:/tmp/globals.sql
   entrypoint: /tmp/createUsersAndDBs.sh
@@ -42,10 +42,14 @@ meta:
     - db
   ports: 
     - "14374:9000"
-  extends: 
-    file: meta.yml
-    service: metaconsumer
   environment: 
+    GESTALT_META:       http://PUBLIC_HOSTNAME:14374
+    GESTALT_ORG:        "com.galacticfog"
+    GESTALT_ID:         "gestalt-config"
+    GESTALT_VERSION:    "1.0"
+    GESTALT_ENV:        "appliance; DEV"
+    GESTALT_NODE_ID:    "0"                                                                                                                
+    GESTALT_SECRET:     "secret"                                                                                                           
     DATABASE_HOSTNAME:   db
     DATABASE_PORT:       5432
     DATABASE_USERNAME:   gestaltdev

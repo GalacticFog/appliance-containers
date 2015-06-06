@@ -25,9 +25,9 @@ DNS=gestalt-dns
 
 create $META
 create $SECURITY
-#create $BILLING
-#create $DNS
+create $BILLING
+create $DNS
 
-#restore $BILLING /tmp/gestaltbilling.pgr
-#restore $DNS     /tmp/gestaltdns.pgr
+restore $BILLING /tmp/gestaltbilling.pgr
+restore $DNS     /tmp/gestaltdns.pgr
 restore $META    /tmp/meta.pgr
