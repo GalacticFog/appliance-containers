@@ -12,7 +12,7 @@ restore() {
 
 create() {
   echo "> Creating database 'gestalt-dns'"
-  createdb --username=gfadmin -w --host=db $1
+  createdb --username=gfadmin --owner=gfadmin -w --host=db $1
 }
 
 echo "> Restoring users/groups..."
