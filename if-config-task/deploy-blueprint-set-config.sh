@@ -15,13 +15,15 @@ read -r -d '' WORKSPACE_CONFIG <<- EOM
   "description": "Workspace for infrastructure"
 }
 EOM
-WORKSPACE_RESPONSE=$(echo $WORKSPACE_CONFIG | curl -X POST -d@- -H "Content-Type:application/json" http://meta:9000/workspaces)
+$(echo $WORKSPACE_CONFIG | curl -X POST -d@- -H "Content-Type:application/json" http://meta:9000/workspaces)
+sleep 2
+WRK_ID=$(curl -s meta:9000/workspaces | jq -r '.[] | select(.name == "Infrastructure") | .id')
 
 BLUEPRINTS_RESPONSE=$(curl -s meta:9000/blueprints)
 BLUEPRINT_ID=$(echo $BLUEPRINTS_RESPONSE | jq -r '.[] | select(.name == "infrastructure") | .id')
 echo "Infrastructure blueprint ID: $BLUEPRINT_ID"
 
-PAYLOAD="{\"location_id\": $ENV_ID, \"environment_id\": $LOC_ID}"
+PAYLOAD="{\"location_id\": $LOC_ID, \"environment_id\": $ENV_ID}"
 DEPLOY_RESPONSE=$(echo $PAYLOAD | curl -s -d@- -X POST http://meta:9000/blueprints/$BLUEPRINT_ID/deploy)
 
 SECURITY_ID=$(echo $DEPLOY_RESPONSE | jq -r '.root_cluster[] | select(.name == "infrastructure") | .nodes[] | select(.node_template_name == "gestalt-security") | .instances[0].id')
