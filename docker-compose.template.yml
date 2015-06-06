@@ -31,9 +31,10 @@ ifDataLoad:
     DB_NAME: postgres
   volumes:
     - if-data-load/createUsersAndDBs.sh:/tmp/createUsersAndDBs.sh
-    - if-data-load/gestaltbilling.pgr:/tmp/gestaltbilling.pgr 
-    - if-data-load/gestaltdns.pgr:/tmp/gestaltdns.pgr     
-    - if-data-load/globals.sql:/tmp/globals.sql        
+#    - if-data-load/gestaltbilling.pgr:/tmp/gestaltbilling.pgr
+#    - if-data-load/gestaltdns.pgr:/tmp/gestaltdns.pgr
+    - if-data-load/meta.pgr:/tmp/meta.pgr
+    - if-data-load/globals.sql:/tmp/globals.sql
   entrypoint: /tmp/createUsersAndDBs.sh
 meta: 
   image: galacticfog.artifactoryonline.com/gestalt-config:latest
