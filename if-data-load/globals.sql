@@ -13,11 +13,8 @@ SET standard_conforming_strings = on;
 
 CREATE ROLE gestaltdev;
 ALTER ROLE gestaltdev WITH SUPERUSER INHERIT CREATEROLE CREATEDB LOGIN NOREPLICATION PASSWORD 'md5cc8f2ad116c498e2c071da66932f8f89';
-
-
-
-
-
+CREATE ROLE bradfutch;
+ALTER ROLE bradfutch WITH SUPERUSER INHERIT CREATEROLE CREATEDB LOGIN REPLICATION;
 
 --
 -- PostgreSQL database cluster dump complete
