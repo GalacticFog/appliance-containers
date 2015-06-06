@@ -42,6 +42,9 @@ meta:
     - db
   ports: 
     - "14374:9000"
+  extends: 
+    file: meta.yml
+    service: metaconsumer
   environment: 
     DATABASE_HOSTNAME:   db
     DATABASE_PORT:       5432
