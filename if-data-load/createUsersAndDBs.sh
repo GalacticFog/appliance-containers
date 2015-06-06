@@ -7,7 +7,7 @@ chmod 0600 ~/.pgpass
 
 restore() {
   echo "> Restoring $1 database..."
-  pg_restore -d $1 $2
+  pg_restore --username=gfadmin -w --host=db -d $1 $2
   rm $2
 }
 
@@ -17,7 +17,7 @@ create() {
 }
 
 echo "> Restoring users/groups..."
-psql -f /tmp/globals.sql $DB_NAME
+psql --username=gfadmin -w --host=db -f /tmp/globals.sql $DB_NAME
 
 META=meta
 SECURITY=gestalt-security
