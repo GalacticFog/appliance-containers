@@ -9,7 +9,7 @@ LOC_ID=1
 CLUSTER_NAME="infrastructure-1.0"
 BP_NAME="gestalt-infrastructure"
 
-USERS=$(curl -s meta:14374/users)
+USERS=$(curl -s meta:9000/users)
 USER_ID=$(echo $USERS | jq -r '.[] | select(.email == "chris@galacticfog.com") | .id')
 
 read -r -d '' WORKSPACE_CONFIG <<EOM
@@ -20,9 +20,9 @@ read -r -d '' WORKSPACE_CONFIG <<EOM
   "description": "Workspace for infrastructure"
 }
 EOM
-TMP=$(echo $WORKSPACE_CONFIG | curl -s -X POST -d@- -H "Content-Type:application/json" http://meta:14374/workspaces)
+TMP=$(echo $WORKSPACE_CONFIG | curl -s -X POST -d@- -H "Content-Type:application/json" http://meta:9000/workspaces)
 sleep 2
-WRK_ID=$(curl -s meta:14374/workspaces | jq -r '.[] | select(.name == "Infrastructure") | .id')
+WRK_ID=$(curl -s meta:9000/workspaces | jq -r '.[] | select(.name == "Infrastructure") | .id')
 if [[ -z $WRK_ID ]]; then 
   echo Could not find workspace
   exit 1
@@ -38,16 +38,16 @@ read -r -d '' ENV_CONFIG <<EOM
   "description" : "Dev environment to deploy infrastructure"
 }
 EOM
-TMP=$(echo $ENV_CONFIG | curl -s -X POST -d@- -H "Content-Type:application/json" http://meta:14374/workspaces/$WRK_ID/environments)
+TMP=$(echo $ENV_CONFIG | curl -s -X POST -d@- -H "Content-Type:application/json" http://meta:9000/workspaces/$WRK_ID/environments)
 sleep 2
-ENV_ID=$(curl -s meta:14374/workspaces/$WRK_ID/environments | jq -r '.[] | select(.name == "DevInfrastructure") | .id')
+ENV_ID=$(curl -s meta:9000/workspaces/$WRK_ID/environments | jq -r '.[] | select(.name == "DevInfrastructure") | .id')
 if [[ -z $ENV_ID ]]; then 
   echo Could not find environment
   exit 1
 fi
 echo Environment ID: $ENV_ID
 
-BLUEPRINTS_RESPONSE=$(curl -s meta:14374/blueprints)
+BLUEPRINTS_RESPONSE=$(curl -s meta:9000/blueprints)
 BLUEPRINT_ID=$(echo $BLUEPRINTS_RESPONSE | jq -r ".[] | select(.name == \"$BP_NAME\") | .id")
 if [[ -z $BLUEPRINT_ID ]]; then 
   echo Could not find blueprint
@@ -56,7 +56,7 @@ fi
 echo "Infrastructure blueprint ID: $BLUEPRINT_ID"
 
 PAYLOAD="{\"location_id\": $LOC_ID, \"environment_id\": $ENV_ID}"
-DEPLOY_RESPONSE=$(echo $PAYLOAD | curl -s -d@- -X POST -H "Content-Type:application/json" http://meta:14374/blueprints/$BLUEPRINT_ID/deploy)
+DEPLOY_RESPONSE=$(echo $PAYLOAD | curl -s -d@- -X POST -H "Content-Type:application/json" http://meta:9000/blueprints/$BLUEPRINT_ID/deploy)
 #echo -e "Deployment response: \n$DEPLOY_RESPONSE"
 DEP_ID=$(echo $DEPLOY_RESPONSE | jq -r '.id')
 echo "Deployment ID: $DEP_ID"
