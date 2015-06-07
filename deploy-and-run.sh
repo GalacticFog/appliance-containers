@@ -10,10 +10,10 @@ done
 
 # deploy appliance blueprint
 
-docker-compose up -d --no-recreate db zookeeper kafka
+sudo docker-compose up -d --no-recreate db zookeeper kafka
 # restore DB
-sudo docker-compose up --no-recreate ifDataLoad
-docker-compose up -d --no-recreate meta
+sudo docker-compose up    --no-recreate ifDataLoad
+sudo docker-compose up -d --no-recreate meta
 # deploy blueprint in meta, parse topology, set config
 #docker-compose up --no-recreate ifConfigTask
 #sudo docker-compose up -d --no-recreate security billing dns launcher
