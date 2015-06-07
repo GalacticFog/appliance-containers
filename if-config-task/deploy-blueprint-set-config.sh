@@ -9,7 +9,7 @@ USER_ID=$(echo $USERS | jq -r '.[] | select(.email == "chris@galacticfog.com") |
 
 read -r -d '' WORKSPACE_CONFIG <<- EOM
 {
-  "org_id": 1,
+  "org_id": $ORG_ID,
   "owner_id": $USER_ID,
   "name": "Infrastructure",
   "description": "Workspace for infrastructure"
@@ -19,12 +19,28 @@ $(echo $WORKSPACE_CONFIG | curl -X POST -d@- -H "Content-Type:application/json" 
 sleep 2
 WRK_ID=$(curl -s meta:9000/workspaces | jq -r '.[] | select(.name == "Infrastructure") | .id')
 
+read -r -d '' ENV_CONFIG <<- EOM
+{
+  "org_id" : $ORG_ID,
+  "owner_id" : $USER_ID,
+  "env_type" : "dev",
+  "name" : "DevInfrastructure",
+  "description" : "Dev environment to deploy infrastructure"
+}
+EOM
+$(echo $ENV_CONFIG | curl -X POST -d@- -H "Content-Type:application/json" http://meta:9000/workspaces/$WRK_ID/environments)
+sleep 2
+ENV_ID=$(curl -s meta:9000/workspaces/$WRK_ID/environments | jq -r '.[] | select(.name == "DevInfrastructure") | .id')
+
 BLUEPRINTS_RESPONSE=$(curl -s meta:9000/blueprints)
 BLUEPRINT_ID=$(echo $BLUEPRINTS_RESPONSE | jq -r '.[] | select(.name == "infrastructure") | .id')
 echo "Infrastructure blueprint ID: $BLUEPRINT_ID"
 
 PAYLOAD="{\"location_id\": $LOC_ID, \"environment_id\": $ENV_ID}"
 DEPLOY_RESPONSE=$(echo $PAYLOAD | curl -s -d@- -X POST http://meta:9000/blueprints/$BLUEPRINT_ID/deploy)
+echo -e "Deployment response: \n$DEPLOY_RESPONSE"
+
+exit
 
 SECURITY_ID=$(echo $DEPLOY_RESPONSE | jq -r '.root_cluster[] | select(.name == "infrastructure") | .nodes[] | select(.node_template_name == "gestalt-security") | .instances[0].id')
 SECURITY_SERVICE_ID=$(echo $DEPLOY_RESPONSE | jq -r '.root_cluster[] | select(.name == "infrastructure") | .nodes[] | select(.node_template_name == "gestalt-security") | .instances[0].service_id')
