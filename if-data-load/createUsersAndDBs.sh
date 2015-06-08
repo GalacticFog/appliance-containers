@@ -1,9 +1,36 @@
 #!/bin/bash
 
+DBSLEEP=${DBSLEEP:-30}
+DBTRIES=${DBTRIES:-10}
+
 cat > ~/.pgpass <<EOF
 db:*:*:$DB_USER:$DB_PASS
 EOF
 chmod 0600 ~/.pgpass
+
+I=$DBTRIES
+echo "> Checking DB server state: $I attempts"
+until [[ $I -eq 0 ]]; do
+    RESP=$(psql --username=gfadmin -w --host=db 'select 1 from postgres' 2>&1)
+    SQLSTAT=$?
+    if [[ $SQLSTAT -eq 0 ]]; then 
+        FOUNDDB=1
+        echo "> Found DB"
+        break; 
+    fi
+    if [[ $SQLSTAT -ne 2 ]]; then 
+        echo "> DB test returned $SQLSTAT: $RESP"
+        exit $SQLSTAT
+    fi
+    let I-=1
+    if [[ $I -gt 0 ]]; then
+        echo "> Failure to contact DB, $I retries left, sleeping $DBSLEEP seconds..."
+        sleep $DBSLEEP
+    else
+        echo "> Failure to contact DB. Quitting now."
+        exit $SQLSTAT
+    fi
+done
 
 restore() {
   echo "> Restoring database $1..."
