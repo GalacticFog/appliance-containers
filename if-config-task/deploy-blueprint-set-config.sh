@@ -4,12 +4,31 @@ set -o nounset
 set -o pipefail
 #set -o xtrace
 
+METASLEEP=${METASLEEP:-30}
+METATRIES=${METATRIES:-10}
+
 ORG_ID=1
 LOC_ID=1
 CLUSTER_NAME="infrastructure-1.0"
 BP_NAME="gestalt-infrastructure"
 
-USERS=$(curl -s http://meta:9000/users)
+I=$METATRIES
+echo "> Checking META server state: $I attempts"
+until [[ $I -eq 0 ]]; do
+    USERS=$(curl -f -s http://meta:9000/users)
+    if [[ $SQLSTAT -eq 0 ]]; then 
+        echo "> Found meta"
+        break; 
+    fi
+    let I-=1
+    if [[ $I -gt 0 ]]; then
+        echo "> Failure to contact meta, $I retries left, sleeping $METASLEEP seconds..."
+        sleep $METASLEEP
+    else
+        echo "> Failure to contact meta. Quitting now."
+        exit 1
+    fi
+done
 USER_ID=$(echo $USERS | jq -r '.[] | select(.email == "chris@galacticfog.com") | .id')
 echo User ID: $USER_ID
 

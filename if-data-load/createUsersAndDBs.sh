@@ -14,7 +14,6 @@ until [[ $I -eq 0 ]]; do
     RESP=$(psql --username=gfadmin -w --host=db -l 2>&1)
     SQLSTAT=$?
     if [[ $SQLSTAT -eq 0 ]]; then 
-        FOUNDDB=1
         echo "> Found DB"
         break; 
     fi
