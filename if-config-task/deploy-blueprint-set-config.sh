@@ -16,7 +16,7 @@ I=$METATRIES
 echo "> Checking META server state: $I attempts"
 until [[ $I -eq 0 ]]; do
     USERS=$(curl -f -s http://meta:9000/users)
-    if [[ $SQLSTAT -eq 0 ]]; then 
+    if [[ $? -eq 0 ]]; then 
         echo "> Found meta"
         break; 
     fi
