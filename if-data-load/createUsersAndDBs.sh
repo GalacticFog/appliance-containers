@@ -11,7 +11,7 @@ chmod 0600 ~/.pgpass
 I=$DBTRIES
 echo "> Checking DB server state: $I attempts"
 until [[ $I -eq 0 ]]; do
-    RESP=$(psql --username=gfadmin -w --host=db 'select 1 from postgres' 2>&1)
+    RESP=$(psql --username=gfadmin -w --host=db -l 2>&1)
     SQLSTAT=$?
     if [[ $SQLSTAT -eq 0 ]]; then 
         FOUNDDB=1
