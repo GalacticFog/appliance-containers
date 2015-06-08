@@ -9,8 +9,9 @@ LOC_ID=1
 CLUSTER_NAME="infrastructure-1.0"
 BP_NAME="gestalt-infrastructure"
 
-USERS=$(curl -s meta:9000/users)
+USERS=$(curl -s http://meta:9000/users)
 USER_ID=$(echo $USERS | jq -r '.[] | select(.email == "chris@galacticfog.com") | .id')
+echo User ID: $USER_ID
 
 read -r -d '' WORKSPACE_CONFIG <<EOM
 {
@@ -22,7 +23,7 @@ read -r -d '' WORKSPACE_CONFIG <<EOM
 EOM
 TMP=$(echo $WORKSPACE_CONFIG | curl -s -X POST -d@- -H "Content-Type:application/json" http://meta:9000/workspaces)
 sleep 2
-WRK_ID=$(curl -s meta:9000/workspaces | jq -r '.[] | select(.name == "Infrastructure") | .id')
+WRK_ID=$(curl -s http://meta:9000/workspaces | jq -r '.[] | select(.name == "Infrastructure") | .id')
 if [[ -z $WRK_ID ]]; then 
   echo Could not find workspace
   exit 1
@@ -40,14 +41,14 @@ read -r -d '' ENV_CONFIG <<EOM
 EOM
 TMP=$(echo $ENV_CONFIG | curl -s -X POST -d@- -H "Content-Type:application/json" http://meta:9000/workspaces/$WRK_ID/environments)
 sleep 2
-ENV_ID=$(curl -s meta:9000/workspaces/$WRK_ID/environments | jq -r '.[] | select(.name == "DevInfrastructure") | .id')
+ENV_ID=$(curl -s http://meta:9000/workspaces/$WRK_ID/environments | jq -r '.[] | select(.name == "DevInfrastructure") | .id')
 if [[ -z $ENV_ID ]]; then 
   echo Could not find environment
   exit 1
 fi
 echo Environment ID: $ENV_ID
 
-BLUEPRINTS_RESPONSE=$(curl -s meta:9000/blueprints)
+BLUEPRINTS_RESPONSE=$(curl -s http://meta:9000/blueprints)
 BLUEPRINT_ID=$(echo $BLUEPRINTS_RESPONSE | jq -r ".[] | select(.name == \"$BP_NAME\") | .id")
 if [[ -z $BLUEPRINT_ID ]]; then 
   echo Could not find blueprint
