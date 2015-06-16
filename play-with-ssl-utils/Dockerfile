@@ -1,4 +1,5 @@
-FROM java:latest
+# FROM java:latest
+FROM java:8-jre
 
 RUN ["wget", "-P", "/etc/apt/sources.list.d", "https://sslmate.com/apt/jessie/sslmate.list"]
 RUN ["wget", "-P", "/etc/apt/trusted.gpg.d", "https://sslmate.com/apt/jessie/sslmate.gpg"]
