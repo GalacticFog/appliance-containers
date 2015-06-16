@@ -19,8 +19,7 @@ usage()
     echo "Relevant Environment Variables"
     echo " * ENABLE_SSL         - download an SSL certificate and use it to configure the service"
     echo " * DOMAIN_NAME        - domain name for the certificate"
-	echo " * SSLMATE_USERNAME	- admin username for your sslmate account"
-	echo " * SSLMATE_PASSWORD	- admin password for your sslmate account"
+	echo " * SSLMATE_APIKEY  	- api key for sslmate account"
 	echo "------------------------------------------------------------------------------------------------"
 	exit 1
 }
@@ -38,27 +37,13 @@ check_file()
 }
 
 
-#this is spoofing the undocumented REST API of SSLMate and providing the account info that we need
-#to grab our domain info
-ssl_link()
+sslmate_config()
 {
-
-	check_availability curl
-	check_file "/opt/bin/parse.py"
-
-	local api_url="https://sslmate.com/api/v1/link"
-	local username=$1
-	local password=$2
-
-	RET=$(curl -s -X POST -A "SSLMate/0.6.2" --data "account_username=$username&account_password=$password" $api_url)
-	VALS=( `echo $RET | /opt/bin/parse.py account_id api_key `)
-	echo account_id ${VALS[0]} > $SSLMATE_CONFIG
-	echo api_key ${VALS[1]}   >> $SSLMATE_CONFIG
-
-	check_file $SSLMATE_CONFIG
+    echo api_key $1 > $SSLMATE_CONFIG
+	check_file        $SSLMATE_CONFIG
 }
 
-ssl_mate()
+sslmate_download_cert()
 {
 	echo "Downloading sslmate certificates for $1 ..." 
 
@@ -76,7 +61,7 @@ ssl_mate()
 
 }
 
-open_ssl()
+openssl_gen_certs()
 {
 	local domain_name=$1
 	local app_name=$2
@@ -91,7 +76,7 @@ open_ssl()
 	check_file $domain_name.p12
 }
 
-key_store()
+gen_keystore()
 {
 	local domain_name=$1
 	local app_name=$2
@@ -120,12 +105,8 @@ launch_without_ssl()
 
 configure_keystore()
 {
-    if [ -z "${SSLMATE_USERNAME+x}" ]; then
-      usage "Environment variable SSLMATE_USERNAME not set"
-      return 
-    fi 
-    if [ -z "${SSLMATE_PASSWORD+x}" ]; then 
-      usage "Environment variable SSLMATE_PASSWORD not set"
+    if [ -z "${SSLMATE_APIKEY+x}" ]; then
+      usage "Environment variable SSLMATE_APIKEY not set"
       return 
     fi 
     if [ -z "${DOMAIN_NAME+x}" ]; then 
@@ -135,13 +116,13 @@ configure_keystore()
 
 	echo "Creating keystore for app with FQDN $DOMAIN_NAME ..."
 
-	ssl_link $SSLMATE_USERNAME $SSLMATE_PASSWORD
+	sslmate_config $SSLMATE_APIKEY
 
-	ssl_mate $DOMAIN_NAME
+	sslmate_download_cert $DOMAIN_NAME
 
-	open_ssl $DOMAIN_NAME gestaltapp secret
+	openssl_gen_certs $DOMAIN_NAME gestaltapp secret
 
-	key_store $DOMAIN_NAME gestaltapp secret
+	gen_keystore $DOMAIN_NAME gestaltapp secret
 }
 
 export SSLMATE_CONFIG=/opt/docker/sslmate.conf

@@ -5,5 +5,5 @@ RUN ["wget", "-P", "/etc/apt/trusted.gpg.d", "https://sslmate.com/apt/jessie/ssl
 RUN ["apt-get", "update"]
 RUN ["apt-get", "install", "-y", "sslmate"]
 
-ADD ssl_and_launch.sh parse.py /opt/bin/
-RUN ["chmod","o+rx","/opt/bin/parse.py","/opt/bin/ssl_and_launch.sh"]
+ADD ssl_and_launch.sh /opt/bin/
+RUN ["chmod","o+rx","/opt/bin/ssl_and_launch.sh"]
