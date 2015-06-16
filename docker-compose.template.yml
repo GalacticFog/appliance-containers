@@ -71,9 +71,6 @@ ifConfigTask:
   entrypoint: /tmp/deploy-blueprint-set-config.sh
 security: 
   image: galacticfog.artifactoryonline.com/gestalt-security:latest
-  extends: 
-    file: meta.yml
-    service: metaconsumer
   environment: 
     - env/security.env
     - env/ssl.env
