@@ -8,8 +8,8 @@ usage() {
   exit 1
 }
 
-if [ $? -ne 2 ]; then 
-  usage "Missing arguments file"
+if [ $# -ne 2 ]; then 
+  usage "Missing arguments"
 fi
 PUBLIC_HOSTNAME=$1
 CONF="$2"
