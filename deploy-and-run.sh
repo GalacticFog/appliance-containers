@@ -1,7 +1,22 @@
 #!/bin/bash
 set -o errexit
+set -o nounset
 
-PUBLIC_HOSTNAME=$(curl -s http://169.254.169.254/latest/meta-data/public-hostname)
+usage() {
+  echo "$1"
+  echo "usage: $0 <public-hostname> <configuration file>"
+  exit 1
+}
+
+if [ $? -ne 2 ]; then 
+  usage "Missing arguments file"
+fi
+PUBLIC_HOSTNAME=$1
+CONF="$2"
+if [ ! -f "$CONF" ]; then 
+  usage "Configuration file does not exist: $CONF"
+fi
+
 echo "> PUBLIC_HOSTNAME=$PUBLIC_HOSTNAME"
 
 for f in "docker-compose" "meta"; do 
