@@ -40,8 +40,10 @@ meta:
   image: galacticfog.artifactoryonline.com/gestalt-config:latest
   links:
     - db
+    - kafka
   ports: 
     - "14374:9000"
+  command: "-Dlistener.host=kafka" "-Dwriter.host=kafka"
   environment: 
     GESTALT_META:       http://PUBLIC_HOSTNAME:14374
     GESTALT_ORG:        "com.galacticfog"
