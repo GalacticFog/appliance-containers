@@ -148,8 +148,8 @@ read -r -d '' DB_CONFIG <<EOM
   {"op": "add", "path": "/host", "value": "db"},
   {"op": "add", "path": "/port", "value": "5432"},
   {"op": "add", "path": "/db_name", "value": "???"},
-  {"op": "add", "path": "/username", "value": "gestsaltdev"},
-  {"op": "add", "path": "/password", "value": "M8keitw0rk"}
+  {"op": "add", "path": "/username", "value": "???"},
+  {"op": "add", "path": "/password", "value": "???"}
 ]
 }
 EOM

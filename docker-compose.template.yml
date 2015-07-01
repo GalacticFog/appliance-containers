@@ -31,6 +31,7 @@ ifDataLoad:
     DB_NAME: postgres
   volumes:
     - if-data-load/createUsersAndDBs.sh:/tmp/createUsersAndDBs.sh
+    - if-data-load/gestaltsecurity.pgr:/tmp/gestaltsecurity.pgr
     - if-data-load/gestaltbilling.pgr:/tmp/gestaltbilling.pgr
     - if-data-load/gestaltdns.pgr:/tmp/gestaltdns.pgr
     - if-data-load/meta.pgr:/tmp/meta.pgr
