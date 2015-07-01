@@ -1,6 +1,4 @@
 metaconsumer: 
-  links:
-  - meta
   environment: 
     GESTALT_META:   http://PUBLIC_HOSTNAME:9000
     GESTALT_ORG:    com.galacticfog

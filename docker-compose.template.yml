@@ -76,6 +76,8 @@ security:
     - "9455:9000"
 billing:
   image: galacticfog.artifactoryonline.com/gestalt-billing:latest
+  links: 
+    - meta
   extends: 
     file: meta.yml
     service: metaconsumer
