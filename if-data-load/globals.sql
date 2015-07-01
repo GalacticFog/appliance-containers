@@ -11,6 +11,7 @@ SET standard_conforming_strings = on;
 -- Roles
 --
 
+CREATE ROLE bradfutch;
 CREATE ROLE gestaltdev;
 ALTER ROLE gestaltdev WITH SUPERUSER INHERIT CREATEROLE CREATEDB LOGIN NOREPLICATION PASSWORD 'md5cc8f2ad116c498e2c071da66932f8f89';
 

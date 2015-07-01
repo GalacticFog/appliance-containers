@@ -133,14 +133,10 @@ echo "Billing:  $BILLING_ID (service $BILLING_SERVICE_ID)"
 echo "DNS:      $DNS_ID (service $DNS_SERVICE_ID)"
 echo "Launcher: $LAUNCHER_ID (service $LAUNCHER_SERVICE_ID)"
 
-echo "GESTALT_NODE=$SECURITY_ID"            >> /tmp/security.env
-echo "GESTALT_SERVICE=$SECURITY_SERVICE_ID" >> /tmp/security.env
-echo "GESTALT_NODE=$BILLING_ID"             >> /tmp/billing.env
-echo "GESTALT_SERVICE=$BILLING_SERVICE_ID"  >> /tmp/billing.env
-echo "GESTALT_NODE=$DNS_ID"                 >> /tmp/dns.env
-echo "GESTALT_SERVICE=$DNS_SERVICE_ID"      >> /tmp/dns.env
-echo "GESTALT_NODE=$LAUNCHER_ID"            >> /tmp/launcher.env
-echo "GESTALT_SERVICE=$LAUNCHER_SERVICE_ID" >> /tmp/launcher.env
+echo "GESTALT_NODE_ID=$SECURITY_ID"     >> /tmp/security.env
+echo "GESTALT_NODE_ID=$BILLING_ID"      >> /tmp/billing.env
+echo "GESTALT_NODE=$DNS_ID"             >> /tmp/dns.env
+echo "GESTALT_NODE=$LAUNCHER_ID"        >> /tmp/launcher.env
 
 read -r -d '' DB_CONFIG <<EOM
 {

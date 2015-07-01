@@ -72,7 +72,6 @@ security:
   image: galacticfog.artifactoryonline.com/gestalt-security:latest
   environment: 
     - env/security.env
-    - env/ssl.env
   ports: 
     - "9455:9000"
 billing:
@@ -82,7 +81,6 @@ billing:
     service: metaconsumer
   environment: 
     - env/billing.env
-    - env/ssl.env
   ports: 
     - "6111:9000"
 #launcher: 
@@ -92,7 +90,6 @@ billing:
 #    service: metaconsumer
 #  environment: 
 #    - env/launcher.env
-#    - env/ssl.env
 #  links: 
 #    - db
 #    - security
