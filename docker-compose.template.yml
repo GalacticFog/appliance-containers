@@ -41,9 +41,10 @@ meta:
   links:
     - db
     - zookeeper
+    - kafka
   ports: 
     - "14374:9000"
-  command: -Dlistener.host=zookeeper -Dwriter.host=zookeeper
+  command: -Dlistener.host=zookeeper -Dwriter.host=kafka
   environment: 
     GESTALT_META:       http://PUBLIC_HOSTNAME:14374
     GESTALT_ORG:        "com.galacticfog"
