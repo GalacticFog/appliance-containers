@@ -1,6 +1,6 @@
 metaconsumer: 
   environment: 
-    GESTALT_META:   http://PUBLIC_HOSTNAME:9000
+    GESTALT_META:   http://PUBLIC_HOSTNAME:14374
     GESTALT_ORG:    com.galacticfog
     GESTALT_SECRET: SECRET
     GESTALT_ENV:    "appliance; DEV"
