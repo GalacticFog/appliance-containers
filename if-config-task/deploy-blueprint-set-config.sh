@@ -4,8 +4,8 @@ set -o nounset
 set -o pipefail
 #set -o xtrace
 
-METASLEEP=${METASLEEP:-30}
-METATRIES=${METATRIES:-10}
+METASLEEP=${METASLEEP:-10}
+METATRIES=${METATRIES:-20}
 
 ORG_ID=1
 LOC_ID=1

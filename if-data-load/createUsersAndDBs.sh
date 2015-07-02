@@ -54,7 +54,7 @@ create $SECURITY
 create $BILLING
 create $DNS
 
-restore $META      /tmp/meta.pgr
+restore $META      /tmp/meta7.pgr
 restore $SECURITY  /tmp/gestaltsecurity.pgr
 # BILLING will migrate/boostrap itself
 restore $BILLING   /tmp/gestaltbilling.pgr
