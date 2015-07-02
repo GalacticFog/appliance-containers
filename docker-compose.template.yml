@@ -78,7 +78,7 @@ security:
   extends: 
     file: meta.yml
     service: metaconsumer
-  environment: 
+  env_file: 
     - env/security.env
   ports: 
     - "9455:9000"
@@ -89,7 +89,7 @@ billing:
   extends: 
     file: meta.yml
     service: metaconsumer
-  environment: 
+  env_file: 
     - env/billing.env
   ports: 
     - "6111:9000"
@@ -98,7 +98,7 @@ billing:
 #  extends: 
 #    file: meta.yml
 #    service: metaconsumer
-#  environment: 
+#  env_file: 
 #    - env/launcher.env
 #  links: 
 #    - db
