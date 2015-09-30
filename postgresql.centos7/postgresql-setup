@@ -4,16 +4,16 @@
 
 # PGVERSION is the full package version, e.g., 9.0.2
 # Note: the specfile inserts the correct value during package build
-PGVERSION=9.3.8
+PGVERSION=9.4.4
 
 # PGENGINE is the directory containing the postmaster executable
 # Note: the specfile inserts the correct value during package build
 #PGENGINE=/usr/bin
-PGENGINE=/usr/pgsql-9.3/bin
+PGENGINE=/usr/pgsql-9.4/bin
 
 # PREVMAJORVERSION is the previous major version, e.g., 8.4, for upgrades
 # Note: the specfile inserts the correct value during package build
-PREVMAJORVERSION=9.2
+PREVMAJORVERSION=9.4
 
 # PREVPGENGINE is the directory containing the previous postmaster executable
 # Note: the specfile inserts the correct value during package build
@@ -28,7 +28,7 @@ fi
 
 # this parsing technique fails for PGDATA pathnames containing spaces,
 # but there's not much I can do about it given systemctl's output format...
-PGDATA="/var/lib/pgsql/data"
+PGDATA="/var/lib/pgsql/9.4/data"
 # PGDATA=`systemctl show -p Environment "${SERVICE_NAME}.service" |
 #                 sed 's/^Environment=//' | tr ' ' '\n' |
 #                 sed -n 's/^PGDATA=//p' | tail -n 1`
@@ -46,10 +46,10 @@ PGPORT="5432"
 # fi
 
 # Log file for initdb
-PGLOG=/var/lib/pgsql/initdb.log
+PGLOG=/var/lib/pgsql/9.4/initdb.log
 
 # Log file for pg_upgrade
-PGUPLOG=/var/lib/pgsql/pgupgrade.log
+PGUPLOG=/var/lib/pgsql/9.4/pgupgrade.log
 
 export PGDATA
 export PGPORT

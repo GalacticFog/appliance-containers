@@ -3,8 +3,8 @@
 DB_NAME=${DB_NAME:-}
 DB_USER=${DB_USER:-}
 DB_PASS=${DB_PASS:-}
-PG_CONFDIR="/var/lib/pgsql/data"
-PGBIN=/usr/pgsql-9.3/bin/postgres
+PG_CONFDIR="/var/lib/pgsql/9.4/data"
+PGBIN=/usr/pgsql-9.4/bin/postgres
 
 __create_user() {
   #Grant rights
