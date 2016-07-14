@@ -1,40 +1,65 @@
-# "ported" by Adam Miller <maxamillion@fedoraproject.org> from
-#   https://github.com/fedora-cloud/Fedora-Dockerfiles
-#
-# Originally written for Fedora-Dockerfiles by
-#   scollier <scollier@redhat.com>
+# vim:set ft=dockerfile:
+FROM debian:jessie
 
-FROM centos:centos7
-MAINTAINER The CentOS Project <cloud-ops@centos.org>
+# explicitly set user/group IDs
+RUN groupadd -r postgres --gid=999 && useradd -r -g postgres --uid=999 postgres
 
-RUN yum install -y http://yum.postgresql.org/9.4/redhat/rhel-7-x86_64/pgdg-centos94-9.4-1.noarch.rpm
+# grab gosu for easy step-down from root
+ENV GOSU_VERSION 1.7
+RUN set -x \
+	&& apt-get update && apt-get install -y --no-install-recommends ca-certificates wget && rm -rf /var/lib/apt/lists/* \
+	&& wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
+	&& wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc" \
+	&& export GNUPGHOME="$(mktemp -d)" \
+	&& gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
+	&& gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
+	&& rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc \
+	&& chmod +x /usr/local/bin/gosu \
+	&& gosu nobody true \
+	&& apt-get purge -y --auto-remove ca-certificates wget
 
-RUN yum -y update; yum clean all
-RUN yum -y install sudo epel-release; yum clean all
-RUN yum -y install postgresql94-server postgresql94 postgresql94-contrib supervisor; yum clean all
+# make the "en_US.UTF-8" locale so postgres will be utf-8 enabled by default
+RUN apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/* \
+	&& localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+ENV LANG en_US.utf8
 
-# RUN localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
-# ENV LANG en_US.utf8
+RUN mkdir /docker-entrypoint-initdb.d
 
-ADD ./postgresql-setup /usr/bin/postgresql-setup
-ADD ./supervisord.conf /etc/supervisord.conf
-ADD ./start_postgres.sh /start_postgres.sh
+RUN apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
 
-#Sudo requires a tty. fix that.
-RUN sed -i 's/.*requiretty$/#Defaults requiretty/' /etc/sudoers
-RUN chmod +x /usr/bin/postgresql-setup
-RUN chmod +x /start_postgres.sh
+ENV PG_MAJOR 9.4
+ENV PG_VERSION 9.4.8-1.pgdg80+1
 
-RUN /usr/bin/postgresql-setup initdb
+RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main' $PG_MAJOR > /etc/apt/sources.list.d/pgdg.list
 
-ADD ./postgresql.conf /var/lib/pgsql/9.4/data/postgresql.conf
+RUN apt-get update \
+	&& apt-get install -y postgresql-common \
+	&& sed -ri 's/#(create_main_cluster) .*$/\1 = false/' /etc/postgresql-common/createcluster.conf \
+	&& apt-get install -y \
+		postgresql-$PG_MAJOR=$PG_VERSION \
+		postgresql-contrib-$PG_MAJOR=$PG_VERSION \
+	&& rm -rf /var/lib/apt/lists/*
 
-RUN chown -v postgres.postgres /var/lib/pgsql/9.4/data/postgresql.conf
+# make the sample config easier to munge (and "correct by default")
+RUN mv -v /usr/share/postgresql/$PG_MAJOR/postgresql.conf.sample /usr/share/postgresql/ \
+	&& ln -sv ../postgresql.conf.sample /usr/share/postgresql/$PG_MAJOR/ \
+	&& sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" /usr/share/postgresql/postgresql.conf.sample
 
-RUN echo "host    all             all             0.0.0.0/0               md5" >> /var/lib/pgsql/9.4/data/pg_hba.conf
+RUN mkdir -p /var/run/postgresql && chown -R postgres /var/run/postgresql
 
-VOLUME ["/var/lib/pgsql"]
+ENV PATH /usr/lib/postgresql/$PG_MAJOR/bin:$PATH
+ENV PGDATA /var/lib/postgresql/data
+VOLUME /var/lib/postgresql/data
+
+COPY docker-entrypoint.sh /
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
+ENV DB_USER=gestaltdev
+ENV DB_PASS=letmein
+
+COPY gestalt.sh /docker-entrypoint-initdb.d/gestalt.sh
+RUN chmod +x    /docker-entrypoint-initdb.d/gestalt.sh
 
 EXPOSE 5432
-
-CMD ["/bin/bash", "/start_postgres.sh"]
+CMD ["postgres"]
