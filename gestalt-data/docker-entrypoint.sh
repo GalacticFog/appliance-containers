@@ -10,6 +10,8 @@ if [ "$1" = 'postgres' ]; then
 	chmod 700 "$PGDATA"
 	chown -R postgres "$PGDATA"
 
+    ls -al "$PGDATA"
+
 	chmod g+s /run/postgresql
 	chown -R postgres /run/postgresql
 
