@@ -1,5 +1,5 @@
 # vim:set ft=dockerfile:
-FROM docker:latest
+FROM docker:1.7
 
 ######################################################################
 # install prereqs: 
