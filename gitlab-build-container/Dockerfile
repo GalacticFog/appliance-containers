@@ -1,10 +1,36 @@
 # vim:set ft=dockerfile:
-FROM docker:1.7
+FROM alpine:3.4
 
 ######################################################################
-# install prereqs: 
-# sbt requires: bash
-RUN apk add --no-cache bash gawk sed grep bc coreutils
+# install prereqs
+RUN apk add --update --no-cache bash gawk sed grep bc coreutils curl wget
+
+######################################################################
+# Install maven
+RUN MAVEN_VERSION=3.3.9 \
+ && cd /usr/share \
+ && wget --quiet http://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz -O - | tar xzf - \
+ && mv /usr/share/apache-maven-$MAVEN_VERSION /usr/share/maven \
+ && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
+
+ENV MAVEN_HOME /usr/share/maven
+
+######################################################################
+# Install docker
+# from https://github.com/docker-library/docker/blob/e33e7226872e53dfa88bee09f153704a66fc103d/1.9/Dockerfile
+
+ENV DOCKER_BUCKET get.docker.com
+ENV DOCKER_VERSION 1.7.1
+ENV DOCKER_SHA256 4d535a62882f2123fb9545a5d140a6a2ccc7bfc7a3c0ec5361d33e498e4876d5
+
+RUN curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-$DOCKER_VERSION" -o /usr/local/bin/docker \
+    && echo "${DOCKER_SHA256}  /usr/local/bin/docker" | sha256sum -c - \
+    && chmod +x /usr/local/bin/docker
+
+COPY docker-entrypoint.sh /usr/local/bin/
+
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["sh"]
 
 ######################################################################
 # Install java
@@ -32,6 +58,8 @@ RUN set -x \
     && apk add --no-cache \
         openjdk8="$JAVA_ALPINE_VERSION" \
     && [ "$JAVA_HOME" = "$(docker-java-home)" ]
+
+RUN rm -rf /var/cache/apk/*
 
 ######################################################################
 # Install sbt
