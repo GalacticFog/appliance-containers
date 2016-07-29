@@ -3,7 +3,7 @@ FROM alpine:3.4
 
 ######################################################################
 # install prereqs
-RUN apk add --update --no-cache bash gawk sed grep bc coreutils curl wget
+RUN apk add --update --no-cache bash gawk sed grep bc coreutils curl wget git
 
 ######################################################################
 # Install maven
