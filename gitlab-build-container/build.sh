@@ -1,4 +1,8 @@
-docker build -t galacticfog/docker-sbt:1.7 .
+#!/bin/bash
+
+set -e 
+
+docker build -t galacticfog/docker-sbt:1.7 -f Dockerfile.sbt .
 docker push galacticfog/docker-sbt:1.7
 
 docker build -t galacticfog/docker-node:1.7 -f Dockerfile.node .

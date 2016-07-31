@@ -1,33 +1,24 @@
 # vim:set ft=dockerfile:
-FROM mhart/alpine-node:6.3
+FROM node:6.3
 
 RUN npm install -g karma karma-cli webpack webpack-dev-server
 
 ######################################################################
 # install prereqs
-RUN apk add --update --no-cache bash gawk sed grep bc coreutils curl wget git jq
-
-RUN apk add --update python py-pip ca-certificates
-
-RUN pip install --upgrade pip
-
-RUN pip install httpie httpie-unixsocket
+RUN apt-get update \
+    && apt-get install -y wget git httpie jq
 
 ######################################################################
 # Install docker
-# from https://github.com/docker-library/docker/blob/e33e7226872e53dfa88bee09f153704a66fc103d/1.9/Dockerfile
 
-ENV DOCKER_BUCKET get.docker.com
-ENV DOCKER_VERSION 1.7.1
-ENV DOCKER_SHA256 4d535a62882f2123fb9545a5d140a6a2ccc7bfc7a3c0ec5361d33e498e4876d5
+RUN apt-get install -y apt-transport-https ca-certificates \
+    && apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
 
-RUN curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-$DOCKER_VERSION" -o /usr/local/bin/docker \
-    && echo "${DOCKER_SHA256}  /usr/local/bin/docker" | sha256sum -c - \
-    && chmod +x /usr/local/bin/docker
+RUN echo "deb https://apt.dockerproject.org/repo debian-jessie main" > /etc/apt/sources.list.d/docker.list 
 
-COPY docker-entrypoint.sh /usr/local/bin/
+RUN apt-get update \
+    && apt-cache policy docker-engine
 
-ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["sh"]
+RUN apt-get install -y docker-engine=1.7.1-0~jessie
 
-RUN rm -rf /var/cache/apk/*
+RUN rm -rf /var/lib/apt/lists/*
