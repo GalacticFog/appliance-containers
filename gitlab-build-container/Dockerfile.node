@@ -1,7 +1,7 @@
 # vim:set ft=dockerfile:
 FROM node:6.3
 
-RUN npm install -g karma karma-cli webpack webpack-dev-server
+RUN npm install -g karma karma-cli webpack webpack-dev-server lab
 
 ######################################################################
 # install prereqs

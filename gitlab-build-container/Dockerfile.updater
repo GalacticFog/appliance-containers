@@ -1,0 +1,14 @@
+# vim:set ft=dockerfile:
+FROM alpine:3.4
+
+######################################################################
+# install prereqs
+RUN apk add --update --no-cache bash gawk sed grep bc coreutils curl wget git jq
+
+RUN apk add --update python py-pip ca-certificates
+
+RUN pip install --upgrade pip
+
+RUN pip install httpie httpie-unixsocket
+
+COPY update-deployed-app.sh /usr/local/bin/
