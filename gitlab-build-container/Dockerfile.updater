@@ -11,4 +11,4 @@ RUN pip install --upgrade pip
 
 RUN pip install httpie httpie-unixsocket
 
-COPY update-deployed-app.sh /usr/local/bin/
+COPY update-deployed-app.sh update-deployed-app-env.sh /usr/local/bin/
