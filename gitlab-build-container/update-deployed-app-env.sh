@@ -35,4 +35,4 @@ done
 
 echo "Update payload:"
 echo $app | jq '.'
-#echo $update | http --check-status PUT $MARATHON/v2/apps/$APPID
+echo $update | http --check-status PUT $MARATHON/v2/apps/$APPID
