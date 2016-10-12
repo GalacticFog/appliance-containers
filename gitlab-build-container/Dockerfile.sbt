@@ -23,15 +23,25 @@ ENV MAVEN_HOME /usr/share/maven
 
 ######################################################################
 # Install docker
-# from https://github.com/docker-library/docker/blob/e33e7226872e53dfa88bee09f153704a66fc103d/1.9/Dockerfile
+# from https://github.com/docker-library/docker/blob/9d14e3554b2b3f2beb4449182d0fdfbe7305fca4/1.12/Dockerfile
+
+RUN apk add --no-cache \
+        ca-certificates \
+        curl \
+        openssl
 
 ENV DOCKER_BUCKET get.docker.com
-ENV DOCKER_VERSION 1.7.1
-ENV DOCKER_SHA256 4d535a62882f2123fb9545a5d140a6a2ccc7bfc7a3c0ec5361d33e498e4876d5
+ENV DOCKER_VERSION 1.12.1
+ENV DOCKER_SHA256 05ceec7fd937e1416e5dce12b0b6e1c655907d349d52574319a1e875077ccb79
 
-RUN curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-$DOCKER_VERSION" -o /usr/local/bin/docker \
-    && echo "${DOCKER_SHA256}  /usr/local/bin/docker" | sha256sum -c - \
-    && chmod +x /usr/local/bin/docker
+RUN set -x \
+    && curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz" -o docker.tgz \
+    && echo "${DOCKER_SHA256} *docker.tgz" | sha256sum -c - \
+    && tar -xzvf docker.tgz \
+    && mv docker/* /usr/local/bin/ \
+    && rmdir docker \
+    && rm docker.tgz \
+    && docker -v
 
 COPY docker-entrypoint.sh /usr/local/bin/
 

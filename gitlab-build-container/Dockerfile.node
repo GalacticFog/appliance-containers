@@ -19,6 +19,10 @@ RUN echo "deb https://apt.dockerproject.org/repo debian-jessie main" > /etc/apt/
 RUN apt-get update \
     && apt-cache policy docker-engine
 
-RUN apt-get install -y docker-engine=1.7.1-0~jessie
+RUN apt-get install -y docker-engine=1.12.1-0~jessie
 
 RUN rm -rf /var/lib/apt/lists/*
+COPY docker-entrypoint.sh /usr/local/bin/
+
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["sh"]
