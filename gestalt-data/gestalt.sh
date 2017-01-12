@@ -13,5 +13,6 @@ EOSQL
 __create_db gestalt-security
 __create_db gestalt-meta
 __create_db gestalt-lambda
+__create_db gestalt-laser
 __create_db gestalt-apigateway
 __create_db gestalt-kong
