@@ -1,0 +1,39 @@
+# vim:set ft=dockerfile:
+FROM node:7.7.3
+
+RUN apt-get update && apt-get install -y \
+    apt-transport-https \
+    ca-certificates \
+    software-properties-common
+
+RUN add-apt-repository "deb http://packages.linuxmint.com debian import"
+
+RUN add-apt-repository "deb http://dl.google.com/linux/chrome/deb/ stable main"
+
+RUN add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/debian \
+   $(lsb_release -cs) \
+   stable"
+
+RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+
+######################################################################
+# install prereqs
+RUN apt-get update && apt-get install -y --force-yes bash gawk sed grep bc coreutils wget git jq httpie \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    software-properties-common \
+    google-chrome-stable \
+    firefox \
+    docker-ce
+
+RUN docker --version
+
+COPY docker-entrypoint.sh /usr/local/bin/
+
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["sh"]
+
+RUN npm install -g karma karma-cli
+    
