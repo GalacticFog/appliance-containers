@@ -26,7 +26,8 @@ RUN apt-get update && apt-get install -y --force-yes bash gawk sed grep bc coreu
     software-properties-common \
     google-chrome-stable \
     firefox \
-    docker-ce
+    docker-ce \
+    python-dev python-pip
 
 RUN docker --version
 
@@ -37,3 +38,7 @@ CMD ["sh"]
 
 RUN npm install -g karma karma-cli
     
+RUN curl -O https://bootstrap.pypa.io/get-pip.py
+
+RUN pip install --upgrade awscli
+
