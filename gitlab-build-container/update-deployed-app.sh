@@ -24,4 +24,4 @@ echo Current image: $(echo $current | jq '.app.container.docker.image')
 update=$(echo $current | jq ".app.container | .docker.image = \"$NEWIMG\" | { \"container\": {\"docker\": .docker}, \"upgradeStrategy\": { \"minimumHealthCapacity\": 0.0, \"maximumOverCapacity\": 1.0 } }")
 echo "Update payload:"
 echo $update
-echo $update | http --check-status PUT $MARATHON/v2/apps/$APPID
+echo $update | http --check-status PUT "$MARATHON/v2/apps/$APPID?force=true"
