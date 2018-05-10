@@ -1,9 +1,9 @@
 # vim:set ft=dockerfile:
-FROM alpine:3.4
+FROM alpine:3.7
 
 ######################################################################
 # install prereqs
-RUN apk add --update --no-cache bash gawk sed grep bc coreutils curl wget git jq
+RUN apk add --update --no-cache bash gawk sed grep bc coreutils curl wget git jq libc6-compat libstdc++
 
 RUN apk add --update python py-pip ca-certificates
 
@@ -49,8 +49,8 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["sh"]
 
 ######################################################################
-# Install java
-# from https://github.com/docker-library/openjdk/blob/54c64cf47d2b705418feb68b811419a223c5a040/8-jdk/alpine/Dockerfile
+# Install openjdk
+# from https://github.com/docker-library/openjdk/blob/2598f7123fce9ea870e67f8f9df745b2b49866c0/8-jdk/alpine/Dockerfile
 
 # Default to UTF-8 file.encoding
 ENV LANG C.UTF-8
@@ -67,15 +67,14 @@ RUN { \
 ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
 ENV PATH $PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin
 
-ENV JAVA_VERSION 8u92
-ENV JAVA_ALPINE_VERSION 8.92.14-r1
+ENV JAVA_VERSION 8u151
+ENV JAVA_ALPINE_VERSION 8.151.12-r0
 
 RUN set -x \
     && apk add --no-cache \
         openjdk8="$JAVA_ALPINE_VERSION" \
     && [ "$JAVA_HOME" = "$(docker-java-home)" ]
 
-RUN rm -rf /var/cache/apk/*
 
 ######################################################################
 # Install sbt
