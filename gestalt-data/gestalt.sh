@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 __create_db() {
 DB_NAME=$1
