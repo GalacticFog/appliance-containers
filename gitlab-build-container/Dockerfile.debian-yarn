@@ -1,5 +1,5 @@
 # vim:set ft=dockerfile:
-FROM node:8
+FROM node:8.11.3-jessie
 
 RUN apt-get update && apt-get install -y \
     apt-transport-https \
@@ -34,7 +34,7 @@ RUN docker --version
 COPY docker-entrypoint.sh /usr/local/bin/
 
 ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["sh"]
+CMD ["bash"]
 
 RUN npm install -g karma karma-cli
     
@@ -42,6 +42,6 @@ RUN curl -O https://bootstrap.pypa.io/get-pip.py
 
 RUN pip install --upgrade awscli
 
-RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh | bash
+RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 
 COPY update-deployed-app.sh update-deployed-app-env.sh /usr/local/bin/
